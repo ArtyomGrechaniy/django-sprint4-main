@@ -31,7 +31,7 @@ class BasePostListView(ListView):
 
 class PostDetailRedirectMixin:
     def get_success_url(self):
-        return reverse('blog:detail_view', kwargs={'pk': self.kwargs['pk']})
+        return reverse('blog:post_detail', kwargs={'pk': self.kwargs['pk']})
 
 
 class LoginRequiredMixin(UserPassesTestMixin):
@@ -122,7 +122,7 @@ class PostDetailView(DetailView):
             comment.author = request.user
             comment.post = self.object
             comment.save()
-            return redirect('blog:detail_view', pk=self.object.pk)
+            return redirect('blog:post_detail', pk=self.object.pk)
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
