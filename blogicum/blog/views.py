@@ -114,8 +114,10 @@ class PostDetailView(DetailView):
         if post.is_published and post.category.is_published:
             return post
 
-        if (self.request.user.is_authenticated
-            and post.author == self.request.user):
+        if (
+            self.request.user.is_authenticated
+            and post.author == self.request.user
+        ):
             return post
 
         from django.http import Http404
