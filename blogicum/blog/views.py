@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView)
 from users.forms import ProfileUpdateForm
@@ -137,7 +137,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('blog:profile', kwargs={'username': self.request.user.username})
+        return reverse(
+            'blog:profile', kwargs={'username': self.request.user.username}
+        )
 
 
 class PostUpdateView(
