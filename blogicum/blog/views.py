@@ -158,7 +158,7 @@ class PostDeleteView(OnlyAuthorAccessMixin, DeleteView):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class(instance=self.get_object())
         return context
-    
+
     def get_success_url(self):
         return reverse('blog:index')
 
