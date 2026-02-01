@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
+from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView)
 from users.forms import ProfileUpdateForm
 
@@ -161,7 +161,7 @@ class PostDeleteView(OnlyAuthorAccessMixin, DeleteView):
         return context
 
 
-class CommentView(LoginRequiredMixin, PostDetailRedirectMixin, FormView):
+class CommentView(LoginRequiredMixin, PostDetailRedirectMixin, CreateView):
     model = Comment
     form_class = CommentCreateForm
 
