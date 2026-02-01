@@ -92,7 +92,7 @@ class ProfileView(ListView):
         return context
 
 
-class ProfileUpdateView(UpdateView):
+class ProfileUpdateView(OnlyAuthorAccessMixin, UpdateView):
     model = User
     form_class = ProfileUpdateForm
     template_name = 'blog/user.html'
@@ -148,6 +148,9 @@ class PostUpdateView(
     model = Post
     form_class = PostCreateForm
     template_name = 'blog/create.html'
+    pk_url_kwarg = 'pk'
+    def handle_no_permission(self):
+        return redirect('blog:post_detail', pk=self.kwargs['pk'])
 
 
 class PostDeleteView(OnlyAuthorAccessMixin, DeleteView):
