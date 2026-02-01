@@ -149,6 +149,7 @@ class PostUpdateView(
     form_class = PostCreateForm
     template_name = 'blog/create.html'
     pk_url_kwarg = 'pk'
+    
     def handle_no_permission(self):
         return redirect('blog:post_detail', pk=self.kwargs['pk'])
 
