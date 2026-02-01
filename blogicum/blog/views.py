@@ -136,7 +136,7 @@ class PostCreateView(CreateView):
 
 class PostUpdateView(
     OnlyAuthorAccessMixin, PostDetailRedirectMixin, UpdateView
-        ):
+):
     model = Post
     form_class = PostCreateForm
     template_name = 'blog/create.html'
@@ -170,7 +170,7 @@ class CommentView(LoginRequiredMixin, PostDetailRedirectMixin, FormView):
 
 class CommentUpdateView(
     OnlyAuthorAccessMixin, PostDetailRedirectMixin, UpdateView
-        ):
+):
     model = Comment
     form_class = CommentCreateForm
     template_name = 'blog/comment.html'
@@ -192,7 +192,7 @@ class CommentUpdateView(
 
 class CommentDeleteView(
     OnlyAuthorAccessMixin, PostDetailRedirectMixin, DeleteView
-        ):
+):
     model = Comment
     template_name = 'blog/comment.html'
 
@@ -201,7 +201,7 @@ class CommentDeleteView(
         comment_pk = self.kwargs['comment_id']
         comment = get_object_or_404(
             Comment,
-            pk = comment_pk,
+            pk=comment_pk,
             post__pk=post_pk
         )
         return comment
