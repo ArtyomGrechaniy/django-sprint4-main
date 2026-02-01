@@ -107,19 +107,20 @@ class ProfileUpdateView(OnlyAuthorAccessMixin, UpdateView):
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/detail.html'
-    
+
     def get_object(self, queryset=None):
         post = super().get_object(queryset)
-        
+
         if post.is_published and post.category.is_published:
             return post
-        
-        if self.request.user.is_authenticated and post.author == self.request.user:
+
+        if (self.request.user.is_authenticated and 
+            post.author == self.request.user):
             return post
-        
+
         from django.http import Http404
         raise Http404
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = CommentCreateForm()
@@ -129,7 +130,6 @@ class PostDetailView(DetailView):
             .order_by('created_at')
         )
         return context
-    
 
     def post(self, request, *args, **kwargs):
         form = CommentCreateForm(request.POST)
