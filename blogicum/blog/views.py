@@ -6,7 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView)
 from users.forms import ProfileUpdateForm
-
+from datetime import timezone
 from .constants import AMOUNT_OF_POSTS_PER_PAGE
 from .forms import CommentCreateForm, PostCreateForm, PostDeleteForm
 from .models import Category, Comment, Post
@@ -30,7 +30,7 @@ class BasePostListView(ListView):
 
 
 class PostDetailRedirectMixin:
-    def get_succes_url(self):
+    def get_success_url(self):
         return reverse('blog:detail_view', kwargs={'pk': self.kwargs['pk']})
 
 
@@ -125,20 +125,19 @@ class PostDetailView(DetailView):
             return redirect('blog:detail_view', pk=self.object.pk)
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostCreateForm
     template_name = 'blog/create.html'
-    success_url = reverse_lazy('blog:profile')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        if not form.instance.pub_date:
+            form.instance.pub_date = timezone.now()
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy(
-            'blog:profile', kwargs={'username': self.request.user.username}
-        )
+        return reverse('blog:profile', kwargs={'username': self.request.user.username})
 
 
 class PostUpdateView(
