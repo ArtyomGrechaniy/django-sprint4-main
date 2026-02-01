@@ -9,7 +9,9 @@ class PostCreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['pub_date'].widget = forms.DateInput(attrs={'type': 'date'})
+        self.fields['pub_date'].widget = forms.DateInput(
+            attrs={'type': 'date'}
+        )
 
 
 class PostDeleteForm(forms.ModelForm):

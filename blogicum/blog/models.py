@@ -98,12 +98,12 @@ class Post(PublishCreated):
 
     def __str__(self):
         return self.title[:PREVIEW_TEXT_LENGTH]
-    
+
 
 class Comment(models.Model):
     text = models.TextField('Текст комментария')
     post = models.ForeignKey(
-        Post, 
+        Post,
         on_delete=models.CASCADE,
         related_name='comments',
     )

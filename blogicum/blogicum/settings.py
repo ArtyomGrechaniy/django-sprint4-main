@@ -103,7 +103,7 @@ LOGOUT_REDIRECT_URL = 'blog:index'
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-] 
+]
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
