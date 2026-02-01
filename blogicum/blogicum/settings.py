@@ -11,6 +11,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'blogicum',
+    'core.apps.CoreConfig',
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig',
