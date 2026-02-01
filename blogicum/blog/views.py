@@ -104,7 +104,9 @@ class ProfileUpdateView(OnlyAuthorAccessMixin, UpdateView):
         return user == self.request.user
 
     def get_success_url(self):
-        return reverse('blog:profile', kwargs={'username': self.object.username})
+        return reverse(
+            'blog:profile', kwargs={'username': self.object.username}
+        )
 
 
 class PostDetailView(DetailView):
