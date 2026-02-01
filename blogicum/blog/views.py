@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
@@ -68,16 +69,22 @@ class CategoryPostView(BasePostListView):
         return context
 
 
-class ProfileView(BasePostListView, ListView):
+class ProfileView(ListView):
     model = Post
     template_name = 'blog/profile.html'
     context_object_name = 'page_obj'
     paginate_by = AMOUNT_OF_POSTS_PER_PAGE
 
-    def get_extra_filter(self):
-        self.profile = get_object_or_404(
-            User, username=self.kwargs['username']
-        )
+    def get_queryset(self):
+        username = self.kwargs['username']
+        self.profile = get_object_or_404(User, username=username)
+        qs = Post.objects.filter(author=self.profile)
+        if self.request.user == self.profile:
+            return qs.select_related('category', 'location', 'author')\
+                     .annotate(comment_count=Count('comments'))\
+                     .order_by('-pub_date')
+
+        return filter_posts_by_publication(qs).order_by('-pub_date')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -110,7 +117,7 @@ class PostDetailView(DetailView):
     def post(self, request, *args, **kwargs):
         form = CommentCreateForm(request.POST)
 
-        if form.is_valid:
+        if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user
             comment.post = self.object
