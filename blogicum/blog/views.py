@@ -185,7 +185,9 @@ class PostDeleteView(OnlyAuthorAccessMixin, DeleteView):
         return context
 
     def get_success_url(self):
-        return reverse('blog:profile', kwargs={'username': self.request.user.username})
+        return reverse(
+            'blog:profile', kwargs={'username': self.request.user.username}
+        )
 
 
 class CommentView(LoginRequiredMixin, PostDetailRedirectMixin, CreateView):
