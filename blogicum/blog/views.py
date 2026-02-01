@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView)
 from users.forms import ProfileUpdateForm
@@ -177,14 +177,7 @@ class PostDeleteView(OnlyAuthorAccessMixin, DeleteView):
     model = Post
     form_class = PostDeleteForm
     template_name = 'blog/create.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = self.form_class(instance=self.get_object())
-        return context
-
-    def get_success_url(self):
-        return reverse('blog:index')
+    success_url = reverse_lazy('blog:index')
 
 
 class CommentView(LoginRequiredMixin, PostDetailRedirectMixin, CreateView):
@@ -238,6 +231,3 @@ class CommentDeleteView(
             post__pk=post_pk
         )
         return comment
-
-    def get_success_url(self):
-        return reverse('blog:post_detail', kwargs={'pk': self.kwargs['pk']})
