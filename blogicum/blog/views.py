@@ -179,6 +179,14 @@ class PostDeleteView(OnlyAuthorAccessMixin, DeleteView):
     template_name = 'blog/create.html'
     success_url = reverse_lazy('blog:index')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.form_class(instance=self.get_object())
+        return context
+
+    def get_success_url(self):
+        return reverse('blog:profile', kwargs={'username': self.request.user.username})
+
 
 class CommentView(LoginRequiredMixin, PostDetailRedirectMixin, CreateView):
     model = Comment
