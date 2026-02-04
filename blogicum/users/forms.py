@@ -4,10 +4,10 @@ from django.contrib.auth.forms import UserCreationForm
 
 User = get_user_model()
 
-USER_PROFILE_FIELDS = ['username', 'first_name', 'last_name']
+USER_PROFILE_FIELDS = ('username', 'first_name', 'last_name')
 
 
-class CustomUserCreationForm(UserCreationForm):
+class UserCreationForm(UserCreationForm):
 
     class Meta:
         model = User

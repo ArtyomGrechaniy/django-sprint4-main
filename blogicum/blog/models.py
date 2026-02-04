@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 
 from .constants import MAX_CHARFIELD_LENGTH, PREVIEW_TEXT_LENGTH
+from .managers import PublishedPostQuerySet
 
 User = get_user_model()
 
@@ -87,6 +88,8 @@ class Post(PublishCreated):
         related_name='posts',
         verbose_name='Категория'
     )
+    
+    objects = PublishedPostQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'публикация'
@@ -99,7 +102,7 @@ class Post(PublishCreated):
     def __str__(self):
         return self.title[:PREVIEW_TEXT_LENGTH]
 
-
+    
 class Comment(models.Model):
     text = models.TextField('Текст комментария')
     post = models.ForeignKey(
