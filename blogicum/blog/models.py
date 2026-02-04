@@ -88,7 +88,7 @@ class Post(PublishCreated):
         related_name='posts',
         verbose_name='Категория'
     )
-    
+
     objects = PublishedPostQuerySet.as_manager()
 
     class Meta:
@@ -102,7 +102,7 @@ class Post(PublishCreated):
     def __str__(self):
         return self.title[:PREVIEW_TEXT_LENGTH]
 
-    
+
 class Comment(models.Model):
     text = models.TextField('Текст комментария')
     post = models.ForeignKey(

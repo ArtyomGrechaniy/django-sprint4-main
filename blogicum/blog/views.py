@@ -32,7 +32,7 @@ class IndexView(BasePostListView, ListView):
 class CategoryPostView(BasePostListView):
     model = Post
     template_name = 'blog/category.html'
-    
+
     def get_category(self):
         if not hasattr(self, 'category'):
             self.category = get_object_or_404(
@@ -41,7 +41,7 @@ class CategoryPostView(BasePostListView):
                 is_published=True
             )
         return self.category
-    
+
     def get_queryset(self):
         return (
             Post.objects
@@ -61,7 +61,7 @@ class ProfileView(ListView):
     template_name = 'blog/profile.html'
     context_object_name = 'page_obj'
     paginate_by = AMOUNT_OF_POSTS_PER_PAGE
-    
+
     def get_author(self):
         if not hasattr(self, 'author'):
             self.author = get_object_or_404(
@@ -77,8 +77,8 @@ class ProfileView(ListView):
             .with_related()
             .filter(author=author)
             .with_comment_count()
-            )
-        
+        )
+
         if self.request.user != author:
             qs = qs.published()
 
@@ -112,7 +112,7 @@ class PostDetailView(ListView):
 
         if post.author == self.request.user:
             return get_object_or_404(Post, pk=self.kwargs['post_id'])
-        
+
         return get_object_or_404(
             Post,
             pk=self.kwargs['post_id'],
