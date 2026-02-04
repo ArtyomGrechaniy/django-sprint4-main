@@ -21,8 +21,8 @@ post_patterns = [
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
-    path('posts/<int:post_id>/', include(post_patterns)),
     path('posts/create/', views.PostCreateView.as_view(), name='create_post'),
+    path('posts/<int:post_id>/', include(post_patterns)),
     path('category/<slug:category_slug>/', views.CategoryPostView.as_view(),
          name='category_posts'),
     path('profile/<str:username>/', views.ProfileView.as_view(),
