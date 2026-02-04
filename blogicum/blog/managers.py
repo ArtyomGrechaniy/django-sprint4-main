@@ -9,7 +9,7 @@ class PublishedPostQuerySet(models.QuerySet['Post']):
             pub_date__lte=timezone.now(),
             is_published=True,
             category__is_published=True
-        )
+        ).order_by('-pub_date',)
 
     def with_comment_count(self):
         return self.annotate(comment_count=Count("comments"))
