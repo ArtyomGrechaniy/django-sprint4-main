@@ -155,7 +155,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(PostMixin, UpdateView):
 
     def get_success_url(self):
-        return redirect('blog:post_detail', post_id=self.kwargs['post_id'])
+        return reverse(
+            'blog:post_detail', kwargs={'post_id': self.kwargs['post_id']}
+        )
 
 
 class PostDeleteView(PostMixin, DeleteView):
