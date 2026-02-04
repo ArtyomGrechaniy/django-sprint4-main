@@ -13,7 +13,6 @@ class AuthorRequiredMixin(UserPassesTestMixin):
 
 class PostMixin(AuthorRequiredMixin, LoginRequiredMixin):
     model = Post
-    form_class = PostCreateForm
     template_name = 'blog/create.html'
     pk_url_kwarg = 'post_id'
 
@@ -24,11 +23,6 @@ class PostMixin(AuthorRequiredMixin, LoginRequiredMixin):
         return reverse(
             'blog:profile', kwargs={'username': self.request.user.username}
         )
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = self.form_class(instance=self.get_object())
-        return context
 
 
 class CommentMixin(LoginRequiredMixin):
