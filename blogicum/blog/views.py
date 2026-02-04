@@ -8,7 +8,7 @@ from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from users.forms import ProfileUpdateForm
 
 from .constants import AMOUNT_OF_POSTS_PER_PAGE
-from .forms import CommentCreateForm
+from .forms import CommentCreateForm, PostCreateForm
 from .mixins import AuthorRequiredMixin, CommentMixin, PostMixin
 from .models import Category, Post
 
@@ -134,12 +134,22 @@ class PostDetailView(ListView):
         return context
 
 
-class PostCreateView(PostMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostCreateForm
+    template_name = 'blog/create.html'
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         if not form.instance.pub_date:
             form.instance.pub_date = timezone.now()
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse(
+            'blog:profile',
+            kwargs={'username': self.request.user.username}
+        )
 
 
 class PostUpdateView(PostMixin, UpdateView):
